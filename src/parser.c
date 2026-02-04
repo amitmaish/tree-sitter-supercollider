@@ -6,7 +6,7 @@
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#define LANGUAGE_VERSION 14
+#define LANGUAGE_VERSION 15
 #define STATE_COUNT 1007
 #define LARGE_STATE_COUNT 202
 #define SYMBOL_COUNT 170
@@ -17,7 +17,7 @@
 #define MAX_ALIAS_SEQUENCE_LENGTH 15
 #define MAX_RESERVED_WORD_SET_SIZE 0
 #define PRODUCTION_ID_COUNT 39
-#define SUPERTYPE_COUNT 0
+#define SUPERTYPE_COUNT 1
 
 enum ts_symbol_identifiers {
   sym_identifier = 1,
@@ -114,7 +114,7 @@ enum ts_symbol_identifiers {
   sym__space_separator = 92,
   sym_source_file = 93,
   sym__expression = 94,
-  sym__expression_statement = 95,
+  sym_expression_statement = 95,
   sym__object = 96,
   sym_partial = 97,
   sym_duplicated_statement = 98,
@@ -293,7 +293,7 @@ static const char * const ts_symbol_names[] = {
   [sym__space_separator] = "_space_separator",
   [sym_source_file] = "source_file",
   [sym__expression] = "_expression",
-  [sym__expression_statement] = "_expression_statement",
+  [sym_expression_statement] = "expression_statement",
   [sym__object] = "_object",
   [sym_partial] = "partial",
   [sym_duplicated_statement] = "duplicated_statement",
@@ -472,7 +472,7 @@ static const TSSymbol ts_symbol_map[] = {
   [sym__space_separator] = sym__space_separator,
   [sym_source_file] = sym_source_file,
   [sym__expression] = sym__expression,
-  [sym__expression_statement] = sym__expression_statement,
+  [sym_expression_statement] = sym_expression_statement,
   [sym__object] = sym__object,
   [sym_partial] = sym_partial,
   [sym_duplicated_statement] = sym_duplicated_statement,
@@ -936,9 +936,10 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = true,
   },
-  [sym__expression_statement] = {
+  [sym_expression_statement] = {
     .visible = false,
     .named = true,
+    .supertype = true,
   },
   [sym__object] = {
     .visible = false,
@@ -2492,6 +2493,37 @@ static const TSStateId ts_primary_state_ids[STATE_COUNT] = {
   [1006] = 1006,
 };
 
+static const TSSymbol ts_supertype_symbols[SUPERTYPE_COUNT] = {
+  sym_expression_statement,
+};
+
+static const TSMapSlice ts_supertype_map_slices[] = {
+  [sym_expression_statement] = {.index = 0, .length = 19},
+};
+
+static const TSSymbol ts_supertype_map_entries[] = {
+  [0] =
+    sym_association,
+    sym_binary_expression,
+    sym_class,
+    sym_code_block,
+    sym_collection,
+    sym_control_structure,
+    sym_duplicated_statement,
+    sym_function_block,
+    sym_function_call,
+    sym_function_definition,
+    sym_indexed_collection,
+    sym_literal,
+    sym_nil_check,
+    sym_partial,
+    sym_return_statement,
+    sym_unary_expression,
+    sym_variable,
+    sym_variable_definition,
+    sym_variable_definition_sequence,
+};
+
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
   START_LEXER();
   eof = lexer->eof(lexer);
@@ -3946,7 +3978,7 @@ static bool ts_lex_keywords(TSLexer *lexer, TSStateId state) {
   }
 }
 
-static const TSLexMode ts_lex_modes[STATE_COUNT] = {
+static const TSLexerMode ts_lex_modes[STATE_COUNT] = {
   [0] = {.lex_state = 0, .external_lex_state = 1},
   [1] = {.lex_state = 47, .external_lex_state = 2},
   [2] = {.lex_state = 47, .external_lex_state = 2},
@@ -5048,7 +5080,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
   [STATE(1)] = {
     [sym_source_file] = STATE(923),
     [sym__expression] = STATE(204),
-    [sym__expression_statement] = STATE(881),
+    [sym_expression_statement] = STATE(881),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5143,7 +5175,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(2)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5241,7 +5273,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(3)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5339,7 +5371,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(4)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5437,7 +5469,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(5)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5535,7 +5567,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(6)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5633,7 +5665,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(7)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5731,7 +5763,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(8)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5829,7 +5861,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(9)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(509),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -5927,7 +5959,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(10)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6025,7 +6057,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(11)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6122,7 +6154,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(12)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6219,7 +6251,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(13)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6316,7 +6348,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(14)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6413,7 +6445,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(15)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6510,7 +6542,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(16)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6607,7 +6639,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(17)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6704,7 +6736,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(18)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6801,7 +6833,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(19)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6898,7 +6930,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(20)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -6995,7 +7027,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(21)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7092,7 +7124,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(22)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7190,7 +7222,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
   },
   [STATE(23)] = {
     [sym__expression] = STATE(204),
-    [sym__expression_statement] = STATE(881),
+    [sym_expression_statement] = STATE(881),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7286,7 +7318,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
   },
   [STATE(24)] = {
     [sym__expression] = STATE(204),
-    [sym__expression_statement] = STATE(881),
+    [sym_expression_statement] = STATE(881),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7381,7 +7413,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(25)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7476,7 +7508,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(26)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7571,7 +7603,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(27)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7666,7 +7698,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(28)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(400),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7760,7 +7792,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(29)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7854,7 +7886,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(30)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -7948,7 +7980,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(31)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(500),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8042,7 +8074,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(32)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8136,7 +8168,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(33)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8230,7 +8262,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(34)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8324,7 +8356,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(35)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8418,7 +8450,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(36)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8512,7 +8544,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(37)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8606,7 +8638,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(38)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8700,7 +8732,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(39)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8794,7 +8826,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(40)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8888,7 +8920,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(41)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -8982,7 +9014,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(42)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -9076,7 +9108,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(43)] = {
-    [sym__expression_statement] = STATE(694),
+    [sym_expression_statement] = STATE(694),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -9170,7 +9202,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(44)] = {
-    [sym__expression_statement] = STATE(714),
+    [sym_expression_statement] = STATE(714),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -9262,7 +9294,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_block_comment] = ACTIONS(5),
   },
   [STATE(45)] = {
-    [sym__expression_statement] = STATE(897),
+    [sym_expression_statement] = STATE(897),
     [sym__object] = STATE(490),
     [sym_partial] = STATE(349),
     [sym_duplicated_statement] = STATE(349),
@@ -48621,7 +48653,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [1278] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__collection_sequence, 1, 0, 0),
   [1280] = {.entry = {.count = 1, .reusable = false}}, SHIFT(161),
   [1282] = {.entry = {.count = 1, .reusable = true}}, SHIFT(556),
-  [1284] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__expression_statement, 1, 0, 0),
+  [1284] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_expression_statement, 1, 0, 0),
   [1286] = {.entry = {.count = 1, .reusable = true}}, SHIFT(98),
   [1288] = {.entry = {.count = 1, .reusable = false}}, SHIFT(421),
   [1290] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__numeric_expression, 1, 0, 0),
@@ -49111,6 +49143,7 @@ TS_PUBLIC const TSLanguage *tree_sitter_supercollider(void) {
     .state_count = STATE_COUNT,
     .large_state_count = LARGE_STATE_COUNT,
     .production_id_count = PRODUCTION_ID_COUNT,
+    .supertype_count = SUPERTYPE_COUNT,
     .field_count = FIELD_COUNT,
     .max_alias_sequence_length = MAX_ALIAS_SEQUENCE_LENGTH,
     .parse_table = &ts_parse_table[0][0],
@@ -49121,6 +49154,9 @@ TS_PUBLIC const TSLanguage *tree_sitter_supercollider(void) {
     .field_names = ts_field_names,
     .field_map_slices = ts_field_map_slices,
     .field_map_entries = ts_field_map_entries,
+    .supertype_map_slices = ts_supertype_map_slices,
+    .supertype_map_entries = ts_supertype_map_entries,
+    .supertype_symbols = ts_supertype_symbols,
     .symbol_metadata = ts_symbol_metadata,
     .public_symbol_map = ts_symbol_map,
     .alias_map = ts_non_terminal_alias_map,
@@ -49139,6 +49175,13 @@ TS_PUBLIC const TSLanguage *tree_sitter_supercollider(void) {
       tree_sitter_supercollider_external_scanner_deserialize,
     },
     .primary_state_ids = ts_primary_state_ids,
+    .name = "supercollider",
+    .max_reserved_word_set_size = 0,
+    .metadata = {
+      .major_version = 0,
+      .minor_version = 1,
+      .patch_version = 0,
+    },
   };
   return &language;
 }

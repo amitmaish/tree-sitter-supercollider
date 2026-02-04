@@ -55,15 +55,15 @@ module.exports = grammar({
     // [$.selector_binary, $.binary_expression],
     // [$.selector_binary, $.unary_expression],
     [$.switch],
-    [$.expression, $._object],
+    [$._expression, $._object],
   ],
 
-  supertypes: ($) => [$.comment, $.expression, $.expression_statement],
+  supertypes: ($) => [$.comment, $.expression_statement],
 
   rules: {
-    source_file: ($) => repeat($.expression),
+    source_file: ($) => repeat($._expression),
 
-    expression: ($) =>
+    _expression: ($) =>
       choice($.code_block, $.class_def, seq($.expression_statement, ";")),
 
     expression_statement: ($) =>
