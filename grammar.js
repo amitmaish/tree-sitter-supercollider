@@ -61,10 +61,9 @@ module.exports = grammar({
 		[$._expression, $._object],
 	],
 
-	// supertypes: $ => [
-	//	   $._object,
-	//	   $._expression_statement,
-	// ],
+	supertypes: $ => [
+		   $.expression_statement,
+	],
 
 	rules: {
 
@@ -73,10 +72,10 @@ module.exports = grammar({
 		_expression: $ => choice(
 			$.code_block,
 			$.class_def,
-			seq($._expression_statement, ";"),
+			seq($.expression_statement, ";"),
 		),
 
-		_expression_statement: $ => choice(
+		expression_statement: $ => choice(
 			// $.function_block,
 			// $.comment,
 			$.function_definition,
@@ -193,9 +192,9 @@ module.exports = grammar({
 		// )),
 
 		_expression_sequence: $ => seq(
-			repeat(prec.right(1, seq($._expression_statement, ";"))),
+			repeat(prec.right(1, seq($.expression_statement, ";"))),
 			// Last statement in sequence
-			$._expression_statement,
+			$.expression_statement,
 			optional(";")
 		),
 
@@ -214,7 +213,7 @@ module.exports = grammar({
 			seq(
 				'{',
 				optional($.parameter_list),
-				// optional(seq($._expression_statement, ";")),
+				// optional(seq($.expression_statement, ";")),
 				optional(
 					$._expression_sequence
 				),
