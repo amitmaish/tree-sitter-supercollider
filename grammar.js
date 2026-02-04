@@ -58,7 +58,7 @@ module.exports = grammar({
     [$.expression, $._object],
   ],
 
-  supertypes: ($) => [$.expression_statement, $.expression],
+  supertypes: ($) => [$.comment, $.expression, $.expression_statement],
 
   rules: {
     source_file: ($) => repeat($.expression),
